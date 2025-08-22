@@ -1,0 +1,66 @@
+@font-face {
+  font-family: "Inter";
+  src: url("/src/assets/fonts/inter/Inter-VariableFont_opsz,wght.ttf")
+    format("truetype-variations");
+  font-weight: 100 900; /* supports full weight range */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Serif";
+  src: url("/src/assets/fonts/noto-serif/NotoSerif-VariableFont_wdth,wght.ttf")
+    format("truetype-variations");
+  font-weight: 100 900; /* supports full weight range */
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Source Code Pro";
+  src: url("/src/assets/fonts/source-code-pro/SourceCodePro-VariableFont_wght")
+    format("truetype-variations");
+  font-weight: 100 900; /* supports full weight range */
+  font-style: normal;
+  font-display: swap;
+}
+
+@import "tailwindcss";
+
+@theme {
+  /* Fonts */
+  --font-inter: "Inter", sans-serif;
+  --font-noto-serif: "Noto Serif", serif;
+  --font-source-code-pro: "Source Code Pro", Monospace;
+
+  /* Neutral */
+  --color-neutral-950: hsl(222 32% 8%);
+  --color-neutral-900: hsl(230 19% 12%);
+  --color-neutral-800: hsl(231 16% 16%);
+  --color-neutral-700: hsl(221 16% 20%);
+  --color-neutral-600: hsl(222 11% 36%);
+  --color-neutral-500: hsl(221 8% 48%);
+  --color-neutral-400: hsl(220 11% 64%);
+  --color-neutral-300: hsl(219 15% 82%);
+  --color-neutral-200: hsl(216 19% 90%);
+  --color-neutral-100: hsl(216 26% 96%);
+  --color-neutral-50: hsl(216 33% 97%);
+  --color-neutral-0: hsl(0 0% 100%);
+
+  /* Blue */
+  --color-blue-700: hsl(228 70% 48%);
+  --color-blue-500: hsl(228 100% 60%);
+  --color-blue-50: hsl(222 100% 96%);
+
+  /* Green */
+  --color-green-500: hsl(148 71% 44%);
+  --color-green-100: hsl(154 84% 90%);
+
+  /* Red */
+  --color-red-500: hsl(355 96% 60%);
+  --color-red-100: hsl(356 100% 92%);
+
+  /* Shadow */
+  --shadow-sm: 0 4px 6px 0 hsla(0, 0%, 94%, 60%);
+  --shadow-lg: 0 8px 12px 0 hsla(0, 0%, 94%, 60%);
+}
