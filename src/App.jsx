@@ -3,7 +3,7 @@ import Login from "./pages.jsx/Login";
 import Signup from "./pages.jsx/Signup";
 import ForgotPassword from "./pages.jsx/ForgotPassword";
 import ResetPassword from "./pages.jsx/ResetPassword";
-import ProtectedRoutes from "./Components/ProtectedRoutes";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 
 function App() {
   return (
