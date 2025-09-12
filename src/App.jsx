@@ -10,7 +10,7 @@ import PublicRoutes from "./components/PublicRoutes";
 import Tags from "./pages/Tags";
 import Setting from "./pages/Setting";
 import { NotesProvider } from "./context/NotesContext";
-import ProtectedRoutes from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -25,7 +25,7 @@ function App() {
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
               </Route>
-              <Route element={<ProtectedRoutes />}>
+              <Route element={<ProtectedRoute />}>
                 <Route path="/" element={<Notes filter="all" />} />
                 <Route path="/archive" element={<Notes filter="archive" />} />
                 <Route path="/tags/:tag" element={<Notes filter="tag" />} />

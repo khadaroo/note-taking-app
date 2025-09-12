@@ -5,7 +5,7 @@ import DesktopLayout from "./DesktopLayout";
 import Layout from "./Layout";
 import useIsDesktop from "../hooks/useIsDesktop";
 
-export default function ProtectedRoutes() {
+export default function ProtectedRoute() {
   const { session, loading } = useAuth();
   const isDesktop = useIsDesktop();
 
