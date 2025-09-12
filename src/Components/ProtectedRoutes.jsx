@@ -1,4 +1,4 @@
-import { Navigate } from "react-router";
+import { Navigate, Outlet } from "react-router";
 import { useAuth } from "../context/AuthContext";
 import Spinner from "./Spinner";
 import DesktopLayout from "./DesktopLayout";
@@ -18,8 +18,16 @@ export default function ProtectedRoutes() {
   }
 
   if (isDesktop) {
-    return <DesktopLayout />;
+    return (
+      <DesktopLayout>
+        <Outlet />
+      </DesktopLayout>
+    );
+  } else {
+    return (
+      <Layout>
+        <Outlet />
+      </Layout>
+    );
   }
-
-  return <Layout />;
 }

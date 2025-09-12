@@ -203,16 +203,14 @@ export default function Notes({ filter }) {
             </p>
           )}
 
-          {notes.length === 0 &&
-            filter ===
-              "all"(
-                <div className="mt-2 rounded-lg border-1 border-neutral-200 bg-neutral-100 p-2 text-sm leading-normal tracking-tight text-neutral-950">
-                  <span>
-                    You don't have any notes yet. Start a new note to capture
-                    your thoughts and ideas.
-                  </span>
-                </div>,
-              )}
+          {notes.length === 0 && filter === "all" && (
+            <div className="mt-2 rounded-lg border-1 border-neutral-200 bg-neutral-100 p-2 text-sm leading-normal tracking-tight text-neutral-950">
+              <span>
+                You don't have any notes yet. Start a new note to capture your
+                thoughts and ideas.
+              </span>
+            </div>
+          )}
 
           {notes.filter((note) => note.isArchived).length === 0 &&
             filter === "archive" && (
