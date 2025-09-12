@@ -9,25 +9,15 @@ export default function ProtectedRoutes() {
   const { session, loading } = useAuth();
   const isDesktop = useIsDesktop();
 
-  if (loading) {
-    return <Spinner />;
-  }
+  if (loading) return <Spinner />;
 
-  if (!session) {
-    return <Navigate to="/login" replace />;
-  }
+  if (!session) return <Navigate to="/login" replace />;
 
-  if (isDesktop) {
-    return (
-      <DesktopLayout>
-        <Outlet />
-      </DesktopLayout>
-    );
-  } else {
-    return (
-      <Layout>
-        <Outlet />
-      </Layout>
-    );
-  }
+  const LayoutWrapper = isDesktop ? DesktopLayout : Layout;
+
+  return (
+    <LayoutWrapper>
+      <Outlet />
+    </LayoutWrapper>
+  );
 }
