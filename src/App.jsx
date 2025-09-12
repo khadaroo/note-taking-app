@@ -6,7 +6,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Notes from "./pages/Notes";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
-import PublicRoutes from "./components/PublicRoutes";
+import PublicRoutes from "./components/PublicRoutes.jsx";
 import Tags from "./pages/Tags";
 import Setting from "./pages/Setting";
 import { NotesProvider } from "./context/NotesContext";
