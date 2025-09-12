@@ -6,7 +6,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Notes from "./pages/Notes";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
-import PublicRoutes from "./components/PublicRoutes.jsx";
+import PublicRoute from "./components/PublicRoute.jsx";
 import Tags from "./pages/Tags";
 import Setting from "./pages/Setting";
 import { NotesProvider } from "./context/NotesContext";
@@ -19,7 +19,7 @@ function App() {
         <ToastProvider>
           <BrowserRouter>
             <Routes>
-              <Route element={<PublicRoutes />}>
+              <Route element={<PublicRoute />}>
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
