@@ -11,8 +11,8 @@ import { AuthProvider } from "./context/AuthContext";
 import { NotesProvider } from "./context/NotesContext";
 import { ToastProvider } from "./context/ToastContext";
 
-import PublicRoute from "./components/PublicRoute"; // ensure exact filename
-import ProtectedRoute from "./components/ProtectedRoute"; // ensure exact filename
+import ProtectedRoute from "./components/ProtectedRoute";
+import PublicRoute from "./components/PublicRoute";
 
 function App() {
   return (
