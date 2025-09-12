@@ -36,7 +36,6 @@ export function NotesProvider({ children }) {
         { event: "*", schema: "public", table: "notes" },
         (payload) => {
           const { eventType, new: newRow, old: oldRow } = payload;
-          console.log("📡 Payload event:", payload.eventType);
 
           if (eventType === "INSERT") {
             setNotes((prev) => [...prev, newRow]);
@@ -49,9 +48,7 @@ export function NotesProvider({ children }) {
           }
         },
       )
-      .subscribe((status) => {
-        console.log("Channel status:", status);
-      });
+      .subscribe();
 
     return () => supabase.removeChannel(channel);
   }, [userId]);

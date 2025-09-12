@@ -1,15 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router";
-import Login from "./pages.jsx/Login";
-import Signup from "./pages.jsx/Signup";
-import ForgotPassword from "./pages.jsx/ForgotPassword";
-import ResetPassword from "./pages.jsx/ResetPassword";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import ProtectedRoutes from "./components/ProtectedRoutes";
-import Notes from "./pages.jsx/Notes";
+import Notes from "./pages/Notes";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
 import PublicRoutes from "./components/PublicRoutes";
-import Tags from "./pages.jsx/Tags";
-import Setting from "./pages.jsx/Setting";
+import Tags from "./pages/Tags";
+import Setting from "./pages/Setting";
 import { NotesProvider } from "./context/NotesContext";
 
 function App() {

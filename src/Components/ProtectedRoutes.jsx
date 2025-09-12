@@ -9,8 +9,6 @@ export default function ProtectedRoutes() {
   const { session, loading } = useAuth();
   const isDesktop = useIsDesktop();
 
-  console.log(isDesktop);
-
   if (loading) {
     return <Spinner />;
   }

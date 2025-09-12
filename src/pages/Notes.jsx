@@ -203,20 +203,20 @@ export default function Notes({ filter }) {
             </p>
           )}
 
-          {notes.length === 0 && (
-            <div className="mt-2 rounded-lg border-1 border-neutral-200 bg-neutral-100 p-2 text-sm leading-normal tracking-tight text-neutral-950">
-              {filter === "all" && (
-                <span>
-                  You don't have any notes yet. Start a new note to capture your
-                  thoughts and ideas.
-                </span>
+          {notes.length === 0 &&
+            filter ===
+              "all"(
+                <div className="mt-2 rounded-lg border-1 border-neutral-200 bg-neutral-100 p-2 text-sm leading-normal tracking-tight text-neutral-950">
+                  <span>
+                    You don't have any notes yet. Start a new note to capture
+                    your thoughts and ideas.
+                  </span>
+                </div>,
               )}
-            </div>
-          )}
 
-          {notes.filter((note) => note.isArchived).length === 0 && (
-            <div className="mt-2 rounded-lg border-1 border-neutral-200 bg-neutral-100 p-2 text-sm leading-normal tracking-tight text-neutral-950">
-              {filter === "archive" && (
+          {notes.filter((note) => note.isArchived).length === 0 &&
+            filter === "archive" && (
+              <div className="mt-2 rounded-lg border-1 border-neutral-200 bg-neutral-100 p-2 text-sm leading-normal tracking-tight text-neutral-950">
                 <span>
                   No notes have been archived yet. Move notes here for
                   safekeeping, or
@@ -225,9 +225,8 @@ export default function Notes({ filter }) {
                   </button>
                   .
                 </span>
-              )}
-            </div>
-          )}
+              </div>
+            )}
 
           <div>
             {filteredNotes.map((note) => (
