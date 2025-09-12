@@ -17,10 +17,12 @@ export default function Search({ value, onChange }) {
           alt=""
         />
       </div>
-      <p className="text-sm leading-[1.3] tracking-tight text-neutral-700">
-        All notes matching <span className="text-neutral-950">"{value}"</span>{" "}
-        are displayed below.
-      </p>
+      {value && (
+        <p className="text-sm leading-[1.3] tracking-tight text-neutral-700">
+          All notes matching <span className="text-neutral-950">"{value}"</span>{" "}
+          are displayed below.
+        </p>
+      )}
       <section></section>
     </>
   );

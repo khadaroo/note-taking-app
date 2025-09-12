@@ -98,23 +98,27 @@ export default function AuthForm({ mode, onSubmit, isLoading }) {
     let newError = {};
 
     // Email
-    if (!email) newError.email = "Email is required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-      newError.email = "Please enter a valid email address";
-    else newError.email = "";
+    if (mode !== "reset") {
+      if (!email) newError.email = "Email is required";
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+        newError.email = "Please enter a valid email address";
+      else newError.email = "";
+    }
 
     // Password
-    if (!password) newError.password = "Password is required";
-    else if (
-      (mode === "signup" || mode === "reset") &&
-      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)
-    )
-      newError.password =
-        "Password must be at least 8 characters, include uppercase, lowercase, and a number";
-    else newError.password = "";
+    if (mode !== "forgot") {
+      if (!password) newError.password = "Password is required";
+      else if (
+        (mode === "signup" || mode === "reset") &&
+        !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)
+      )
+        newError.password =
+          "Password must be at least 8 characters, include uppercase, lowercase, and a number";
+      else newError.password = "";
+    }
 
     // Confirm password only for signup/reset
-    if (mode === "signup" || mode === "reset") {
+    if (mode === "reset") {
       if (!confirmPassword)
         newError.confirmPassword = "Confirm password is required";
       else if (confirmPassword !== password)

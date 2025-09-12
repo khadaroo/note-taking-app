@@ -5,12 +5,12 @@ import ForgotPassword from "./pages.jsx/ForgotPassword";
 import ResetPassword from "./pages.jsx/ResetPassword";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Notes from "./pages.jsx/Notes";
-import { AuthProvider } from "./context.jsx/AuthContext";
-import { ToastProvider } from "./context.jsx/ToastContext";
+import { AuthProvider } from "./context/AuthContext";
+import { ToastProvider } from "./context/ToastContext";
 import PublicRoutes from "./components/PublicRoutes";
-import { NotesProvider } from "./context.jsx/NotesContext";
-import Note from "./pages.jsx/Note";
 import Tags from "./pages.jsx/Tags";
+import Setting from "./pages.jsx/Setting";
+import { NotesProvider } from "./context/NotesContext";
 
 function App() {
   return (
@@ -31,7 +31,7 @@ function App() {
                 <Route path="/tags/:tag" element={<Notes filter="tag" />} />
                 <Route path="/search" element={<Notes filter="search" />} />
                 <Route path="/tags" element={<Tags />} />
-                <Route path="/setting" />
+                <Route path="/setting" element={<Setting />} />
               </Route>
             </Routes>
           </BrowserRouter>

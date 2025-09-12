@@ -8,35 +8,35 @@ import AuthSwitch from "../components/AuthSwitch";
 import VerticalDivider from "../components/VerticalDivider";
 import { supabase } from "../lib/supabase";
 import { useState } from "react";
-import { useToast } from "../context.jsx/ToastContext";
+import { useToast } from "../context/ToastContext";
+import { useNavigate } from "react-router";
+import Spinner from "../components/Spinner";
 
 export default function Signup() {
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const { showToast } = useToast();
 
   const handleSignup = async ({ email, password }) => {
     setIsLoading(true);
 
-    const { error } = await supabase.auth.signUp(
-      {
-        email: email,
-        password: password,
-      },
-      { redirectTo: "http://localhost:5173/login" },
-    );
+    const { error } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+    });
 
     if (error) {
       showToast(error.message, "error");
       setIsLoading(false);
     } else {
-      showToast("Check your email to confirm your account", "success");
+      showToast("Successfully your account has been created", "success");
     }
 
     setIsLoading(false);
   };
 
-  // if (loading) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
   return (
     <Main>

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Link,
   useLocation,
@@ -5,12 +6,11 @@ import {
   useParams,
   useSearchParams,
 } from "react-router";
-import { useNotes } from "../context.jsx/NotesContext";
 import NoteCard from "../components/NoteCard";
 import Note from "./Note";
 import useIsDesktop from "../hooks/useIsDesktop";
 import Search from "../components/Search";
-import Tags from "./Tags";
+import { useNotes } from "../context/NotesContext";
 
 export default function Notes({ filter }) {
   const { notes } = useNotes();
@@ -21,8 +21,18 @@ export default function Notes({ filter }) {
   const navigate = useNavigate();
   const location = useLocation();
   const isSearchPath = location.pathname.startsWith("/search");
+  const [isCreating, setIsCreating] = useState(false);
 
   const hasNote = searchParams.has("note_id");
+
+  useEffect(() => {
+    if (hasNote) setIsCreating(false);
+  }, [hasNote]);
+
+  const handleCreate = () => {
+    setIsCreating(true);
+    navigate(location.pathname, { replace: true });
+  };
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -38,6 +48,8 @@ export default function Notes({ filter }) {
     if (filter === "archive") return notes.filter((n) => n.isArchived);
     if (filter === "tag") return notes.filter((n) => n.tags.includes(tag));
     if (filter === "search") {
+      if (!searchQuery) return [];
+
       const search = searchQuery.toLowerCase();
       return notes.filter(
         (note) =>
@@ -60,9 +72,20 @@ export default function Notes({ filter }) {
 
   const title = titles[filter] || "All Notes";
 
-  if (!isDesktop && !hasNote)
+  if (!isDesktop && (hasNote || isCreating))
     return (
-      <div className="flex h-screen flex-col gap-4">
+      <Note
+        isCreating={isCreating}
+        onClose={() => {
+          setIsCreating(false);
+          navigate(location.pathname, { replace: true });
+        }}
+      />
+    );
+
+  if (!isDesktop && (!hasNote || !isCreating))
+    return (
+      <div className="relative flex h-screen flex-col gap-4">
         {filter === "tag" && (
           <Link to="/tags" className="flex items-center gap-1">
             <img
@@ -87,6 +110,29 @@ export default function Notes({ filter }) {
 
         {isSearchPath && <Search value={searchQuery} onChange={handleChange} />}
 
+        {filter === "archive" && (
+          <p className="mt-2 text-sm text-neutral-700">
+            All your archived notes are stored here. You can restore or delete
+            them anytime.
+          </p>
+        )}
+
+        {notes.length === 0 && (
+          <div className="mt-2 rounded-lg border-1 border-neutral-200 bg-neutral-100 p-2 text-sm leading-normal tracking-tight text-neutral-950">
+            {filter === "all" ? (
+              <span>
+                You don't have any notes yet. Start a new note to capture your
+                thoughts and ideas.
+              </span>
+            ) : (
+              <span>
+                No notes have been archived yet. Move notes here for
+                safekeeping, or <button>create a new note</button>.
+              </span>
+            )}
+          </div>
+        )}
+
         <section className="space-y-2">
           <div>
             {filteredNotes.map((note) => (
@@ -94,10 +140,19 @@ export default function Notes({ filter }) {
             ))}
           </div>
         </section>
+
+        <button
+          onClick={handleCreate}
+          className="fixed right-10 bottom-25 flex size-12 cursor-pointer items-center justify-center rounded-full bg-blue-500 md:bottom-30 md:size-16"
+        >
+          <img
+            className="size-8"
+            src="src/assets/images/icon-plus.svg"
+            alt="plus icon"
+          />
+        </button>
       </div>
     );
-
-  if (!isDesktop && hasNote) return <Note notes={notes} />;
 
   if (isDesktop)
     return (
@@ -129,7 +184,10 @@ export default function Notes({ filter }) {
           </Link>
         </section>
         <section className="flex flex-col gap-2 overflow-auto border-r-1 border-neutral-200 py-5 pr-4 pl-8">
-          <button className="flex w-full items-center justify-center rounded-lg bg-blue-500 px-4 py-3 text-sm leading-normal font-medium tracking-wide text-white">
+          <button
+            onClick={handleCreate}
+            className="flex w-full cursor-pointer items-center justify-center rounded-lg bg-blue-500 px-4 py-3 text-sm leading-normal font-medium tracking-wide text-white"
+          >
             <img
               className="size-5"
               src="src/assets/images/icon-plus.svg"
@@ -147,15 +205,25 @@ export default function Notes({ filter }) {
 
           {notes.length === 0 && (
             <div className="mt-2 rounded-lg border-1 border-neutral-200 bg-neutral-100 p-2 text-sm leading-normal tracking-tight text-neutral-950">
-              {filter === "all" ? (
+              {filter === "all" && (
                 <span>
                   You don't have any notes yet. Start a new note to capture your
                   thoughts and ideas.
                 </span>
-              ) : (
+              )}
+            </div>
+          )}
+
+          {notes.filter((note) => note.isArchived).length === 0 && (
+            <div className="mt-2 rounded-lg border-1 border-neutral-200 bg-neutral-100 p-2 text-sm leading-normal tracking-tight text-neutral-950">
+              {filter === "archive" && (
                 <span>
                   No notes have been archived yet. Move notes here for
-                  safekeeping, or <button>create a new note</button>.
+                  safekeeping, or
+                  <button onClick={handleCreate} className="underline">
+                    create a new note
+                  </button>
+                  .
                 </span>
               )}
             </div>
@@ -168,9 +236,16 @@ export default function Notes({ filter }) {
           </div>
         </section>
 
-        {isDesktop && hasNote && (
+        {isDesktop && (hasNote || isCreating) && (
           <section className="flex">
-            <Note notes={notes} />
+            <Note
+              key={isCreating ? "new " : "existing"}
+              isCreating={isCreating}
+              onClose={() => {
+                setIsCreating(false);
+                navigate(location.pathname, { replace: true });
+              }}
+            />
           </section>
         )}
       </>

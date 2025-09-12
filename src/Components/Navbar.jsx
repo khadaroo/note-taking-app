@@ -37,7 +37,7 @@ export default function Navbar() {
       <HorizontalDivider />
 
       <NavBarItem
-        path="/settings"
+        path="/setting"
         imageSrc="src/assets/images/icon-settings.svg"
         label="Setting"
       />

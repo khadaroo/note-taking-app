@@ -8,7 +8,7 @@ import AuthSwitch from "../components/AuthSwitch";
 import VerticalDivider from "../components/VerticalDivider";
 import { supabase } from "../lib/supabase";
 import { useState } from "react";
-import { useToast } from "../context.jsx/ToastContext";
+import { useToast } from "../context/ToastContext";
 import Spinner from "../components/Spinner";
 
 export default function Login() {

@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router";
-import { useAuth } from "../context.jsx/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import Spinner from "./Spinner";
 
 export default function PublicRoutes() {

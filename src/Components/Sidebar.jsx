@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { useNotes } from "../context.jsx/NotesContext";
+import { useNotes } from "../context/NotesContext";
 
 export default function Sidebar() {
   const { notes } = useNotes();

@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import TagItem from "../components/TagItem";
-import { useNotes } from "../context.jsx/NotesContext";
+import { useNotes } from "../context/NotesContext";
 
 export default function Tags() {
   const { notes } = useNotes();
