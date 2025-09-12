@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -10,7 +10,7 @@ import PublicRoutes from "./components/PublicRoutes";
 import Tags from "./pages/Tags";
 import Setting from "./pages/Setting";
 import { NotesProvider } from "./context/NotesContext";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 function App() {
   return (
