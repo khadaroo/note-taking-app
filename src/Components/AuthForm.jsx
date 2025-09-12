@@ -16,60 +16,116 @@ function getButtonText(mode) {
   }
 }
 
-export default function AuthForm({ mode, onSubmit }) {
+export default function AuthForm({ mode, onSubmit, isLoading }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [touched, setTouched] = useState({
+    email: false,
+    password: false,
+    confirmPassword: false,
+  });
+
   const [error, setError] = useState({
     email: "",
     password: "",
     confirmPassword: "",
   });
 
-  const validate = () => {
+  const [submitted, setSubmitted] = useState(false);
+
+  const validateField = (field, value) => {
     let newError = { ...error };
 
-    if (mode === "signup" || mode === "reset") {
-      if (!email) {
-        newError.email = "Email is required";
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        newError.email = "Please enter a valid email address.";
-      } else {
-        newError.email = "";
-      }
-
-      if (!password) {
-        newError.password = "Password is required";
-      } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)) {
-        newError.password =
-          "Password must be at least 8 characters, include uppercase, lowercase, and a number.";
-      } else {
-        newError.password = "";
-      }
-
-      if (!confirmPassword) {
-        newError.confirmPassword = "Confirm password is required";
-      } else if (confirmPassword && password !== confirmPassword) {
-        newError.confirmPassword = "Password do not match";
-      } else {
-        newError.confirmPassword = "";
-      }
+    if (field === "email") {
+      if (!value) newError.email = "Email is required";
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+        newError.email = "Please enter a valid email address";
+      else newError.email = "";
     }
 
-    if (mode === "login" || mode === "forgot") {
-      if (!email) newError.email = "Email is required";
-      if (!password) newError.password = "Password is required";
+    if (field === "password") {
+      if (!value) newError.password = "Password is required";
+      else if (
+        (mode === "signup" || mode === "reset") &&
+        !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(value)
+      )
+        newError.password =
+          "Password must be at least 8 characters, include uppercase, lowercase, and a number";
+      else newError.password = "";
+    }
+
+    if (
+      field === "confirmPassword" &&
+      (mode === "signup" || mode === "reset")
+    ) {
+      if (!value) newError.confirmPassword = "Confirm password is required";
+      else if (value !== password)
+        newError.confirmPassword = "Passwords do not match";
+      else newError.confirmPassword = "";
     }
 
     setError(newError);
+    return newError;
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    setTouched((prev) => ({ ...prev, email: true }));
+    validateField("email", e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    setTouched((prev) => ({ ...prev, password: true }));
+    validateField("password", e.target.value);
+  };
+
+  const handleConfirmChange = (e) => {
+    setConfirmPassword(e.target.value);
+    setTouched((prev) => ({ ...prev, confirmPassword: true }));
+    if (mode === "signup" || mode === "reset")
+      validateField("confirmPassword", e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setSubmitted(true);
 
-    validate();
+    let newError = {};
+
+    // Email
+    if (!email) newError.email = "Email is required";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      newError.email = "Please enter a valid email address";
+    else newError.email = "";
+
+    // Password
+    if (!password) newError.password = "Password is required";
+    else if (
+      (mode === "signup" || mode === "reset") &&
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password)
+    )
+      newError.password =
+        "Password must be at least 8 characters, include uppercase, lowercase, and a number";
+    else newError.password = "";
+
+    // Confirm password only for signup/reset
+    if (mode === "signup" || mode === "reset") {
+      if (!confirmPassword)
+        newError.confirmPassword = "Confirm password is required";
+      else if (confirmPassword !== password)
+        newError.confirmPassword = "Passwords do not match";
+      else newError.confirmPassword = "";
+    }
+
+    setError(newError);
+
+    const hasError = Object.values(newError).some((e) => e);
+    if (hasError) return;
 
     onSubmit({ email, password });
   };
@@ -81,39 +137,19 @@ export default function AuthForm({ mode, onSubmit }) {
           <label className="text-sm font-medium text-neutral-950">
             Email Address
           </label>
-
           <input
-            className={`w-full rounded-lg border border-neutral-300 px-4 py-3 ring-neutral-500 ring-offset-2 outline-neutral-950 hover:bg-neutral-50 focus:ring-2 focus:outline-none ${email && error.email ? "border-red-500" : ""}`}
             type="email"
             placeholder="email@example.com"
             value={email}
-            onChange={(e) => {
-              validate();
-              setEmail(e.target.value);
-            }}
+            onChange={handleEmailChange}
+            className={`w-full rounded-lg border px-4 py-3 ring-neutral-500 ring-offset-2 outline-none hover:bg-neutral-50 focus:ring-2 ${
+              (touched.email || submitted) && error.email
+                ? "border-red-500"
+                : "border-neutral-300"
+            }`}
           />
-
-          {email && error.email && (
-            <div className="mt-1 flex items-center gap-2">
-              <svg
-                className="size-4 stroke-red-500 text-red-500"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.5"
-                  d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0ZM12.006 15.693v-4.3M12 8.355v-.063"
-                />
-              </svg>
-              <span className="inline-block text-xs text-red-500">
-                {error.email}
-              </span>
-            </div>
+          {(touched.email || submitted) && error.email && (
+            <p className="mt-1 text-xs text-red-500">{error.email}</p>
           )}
         </div>
       )}
@@ -126,63 +162,40 @@ export default function AuthForm({ mode, onSubmit }) {
           {mode === "login" && (
             <Link
               to="/forgot-password"
-              className="absolute top-0 right-0 cursor-pointer text-sm font-light text-neutral-600 underline hover:text-blue-500"
+              className="absolute top-0 right-0 text-sm font-light text-neutral-600 underline hover:text-blue-500"
             >
               Forgot
             </Link>
           )}
           <div className="relative">
             <input
-              className={`w-full rounded-lg border border-neutral-300 px-4 py-3 ring-neutral-500 ring-offset-2 outline-neutral-950 hover:bg-neutral-50 focus:ring-2 focus:outline-none ${password && error.password ? "border-red-500" : ""}`}
               type={showPassword ? "text" : "password"}
               value={password}
-              onChange={(e) => {
-                validate();
-                setPassword(e.target.value);
-              }}
+              onChange={handlePasswordChange}
+              className={`w-full rounded-lg border px-4 py-3 ring-neutral-500 ring-offset-2 outline-none hover:bg-neutral-50 focus:ring-2 ${
+                (touched.password || submitted) && error.password
+                  ? "border-red-500"
+                  : "border-neutral-300"
+              }`}
             />
             <div
               onClick={() => setShowPassword(!showPassword)}
-              className="cursor-pointer"
+              className="absolute top-0 right-4 translate-y-1/2 cursor-pointer"
             >
               {showPassword ? (
                 <img
-                  className="absolute top-0 right-4 translate-y-1/2"
                   src="src/assets/images/icon-hide-password.svg"
                   alt="Hide password icon"
                 />
               ) : (
                 <img
-                  className="absolute top-0 right-4 translate-y-1/2"
                   src="src/assets/images/icon-show-password.svg"
                   alt="Show password icon"
                 />
               )}
             </div>
-
-            {(mode !== "login" || (password && error.password)) && (
-              <div className="mt-1.5 flex items-center gap-2">
-                <svg
-                  className={`size-4 ${error.password ? "stroke-red-500" : "stroke-neutral-600"}`}
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="1.5"
-                    d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0ZM12.006 15.693v-4.3M12 8.355v-.063"
-                  />
-                </svg>
-                <span
-                  className={`text-xs ${password && error.password ? "text-red-500" : "text-neutral-600"}`}
-                >
-                  {error.password || "At least 8 characters"}
-                </span>
-              </div>
+            {(touched.password || submitted) && error.password && (
+              <p className="mt-1 text-xs text-red-500">{error.password}</p>
             )}
           </div>
         </div>
@@ -195,61 +208,77 @@ export default function AuthForm({ mode, onSubmit }) {
           </label>
           <div className="relative">
             <input
-              className={`w-full rounded-lg border border-neutral-300 px-4 py-3 ring-neutral-500 ring-offset-2 outline-neutral-950 hover:bg-neutral-50 focus:ring-2 focus:outline-none ${confirmPassword && error.confirmPassword ? "border-red-500" : ""}`}
               type={showConfirmPassword ? "text" : "password"}
               value={confirmPassword}
-              onChange={(e) => {
-                validate();
-                setConfirmPassword(e.target.value);
-              }}
+              onChange={handleConfirmChange}
+              className={`w-full rounded-lg border px-4 py-3 ring-neutral-500 ring-offset-2 outline-none hover:bg-neutral-50 focus:ring-2 ${
+                (touched.confirmPassword || submitted) && error.confirmPassword
+                  ? "border-red-500"
+                  : "border-neutral-300"
+              }`}
             />
             <div
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="cursor-pointer"
+              className="absolute top-0 right-4 translate-y-1/2 cursor-pointer"
             >
               {showConfirmPassword ? (
                 <img
-                  className="absolute top-0 right-4 translate-y-1/2"
                   src="src/assets/images/icon-hide-password.svg"
                   alt="Hide password icon"
                 />
               ) : (
                 <img
-                  className="absolute top-0 right-4 translate-y-1/2"
                   src="src/assets/images/icon-show-password.svg"
                   alt="Show password icon"
                 />
               )}
             </div>
+            {(touched.confirmPassword || submitted) &&
+              error.confirmPassword && (
+                <p className="mt-1 text-xs text-red-500">
+                  {error.confirmPassword}
+                </p>
+              )}
           </div>
-
-          {confirmPassword && error.confirmPassword && (
-            <div className="mt-1 flex items-center gap-2">
-              <svg
-                className="size-4 stroke-red-500 text-red-500"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.5"
-                  d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0ZM12.006 15.693v-4.3M12 8.355v-.063"
-                />
-              </svg>
-              <span className="inline-block text-xs text-red-500">
-                {error.confirmPassword}
-              </span>
-            </div>
-          )}
         </div>
       )}
 
-      <button className="w-full rounded-lg bg-blue-500 px-4 py-3 text-base leading-tight font-normal text-white ring-neutral-500 ring-offset-2 transition-colors hover:bg-blue-700 focus:ring-2">
-        {getButtonText(mode)}
+      <button
+        type="submit"
+        disabled={isLoading}
+        className={`w-full rounded-lg px-4 py-3 text-base font-normal text-white ring-neutral-500 ring-offset-2 transition-colors focus:ring-2 ${
+          isLoading
+            ? "cursor-not-allowed bg-blue-400"
+            : "bg-blue-500 hover:bg-blue-700"
+        }`}
+      >
+        {isLoading ? (
+          <div className="flex items-center justify-center gap-2">
+            <svg
+              className="h-5 w-5 animate-spin text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+              />
+            </svg>
+            {getButtonText(mode)}
+          </div>
+        ) : (
+          getButtonText(mode)
+        )}
       </button>
     </form>
   );
