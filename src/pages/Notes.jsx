@@ -5,7 +5,7 @@ import {
   useNavigate,
   useParams,
   useSearchParams,
-} from "react-router";
+} from "react-router-dom";
 import NoteCard from "../components/NoteCard";
 import Note from "./Note";
 import useIsDesktop from "../hooks/useIsDesktop";

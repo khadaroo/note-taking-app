@@ -8,7 +8,7 @@ import { useToast } from "../context/ToastContext";
 import { useEffect, useState } from "react";
 import Spinner from "../components/Spinner";
 import { useAuth } from "../context/AuthContext";
-import { Navigate } from "react-router";
+import { Navigate } from "react-router-dom";
 
 export default function ResetYourPassword() {
   const [isLoading, setIsLoading] = useState(false);

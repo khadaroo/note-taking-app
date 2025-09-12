@@ -9,7 +9,7 @@ import VerticalDivider from "../components/VerticalDivider";
 import { supabase } from "../lib/supabase";
 import { useState } from "react";
 import { useToast } from "../context/ToastContext";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
 
 export default function Signup() {

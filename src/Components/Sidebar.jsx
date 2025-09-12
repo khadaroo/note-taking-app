@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { useNotes } from "../context/NotesContext";
 
 export default function Sidebar() {

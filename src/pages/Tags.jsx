@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import TagItem from "../components/TagItem";
 import { useNotes } from "../context/NotesContext";
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation, useSearchParams } from "react-router";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import useIsDesktop from "../hooks/useIsDesktop";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../context/AuthContext";
