@@ -6,13 +6,8 @@ import ResetPassword from "./pages/ResetPassword";
 import Notes from "./pages/Notes";
 import Tags from "./pages/Tags";
 import Setting from "./pages/Setting";
-
-import { AuthProvider } from "./context/AuthContext";
-import { NotesProvider } from "./context/NotesContext";
-import { ToastProvider } from "./context/ToastContext";
-
-import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
