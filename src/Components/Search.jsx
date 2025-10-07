@@ -1,4 +1,5 @@
 import NoteCard from "./NoteCard";
+import searchIcon from "../assets/images/icon-search.svg";
 
 export default function Search({ value, onChange }) {
   return (
@@ -13,7 +14,7 @@ export default function Search({ value, onChange }) {
         />
         <img
           className="absolute top-1/2 left-4 -translate-y-1/2"
-          src="src/assets/images/icon-search.svg"
+          src={searchIcon}
           alt=""
         />
       </div>

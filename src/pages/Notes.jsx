@@ -11,6 +11,10 @@ import Note from "./Note";
 import useIsDesktop from "../hooks/useIsDesktop";
 import Search from "../Components/Search";
 import { useNotes } from "../context/NotesContext";
+import arrowLeftIcon from "../assets/images/icon-arrow-left.svg";
+import plusIcon from "../assets/images/icon-plus.svg";
+import searchIcon from "../assets/images/icon-search.svg";
+import settingIcon from "../assets/images/icon-settings.svg";
 
 export default function Notes({ filter }) {
   const { notes } = useNotes();
@@ -90,7 +94,7 @@ export default function Notes({ filter }) {
           <Link to="/tags" className="flex items-center gap-1">
             <img
               className="size-4.5"
-              src="../src/assets/images/icon-arrow-left.svg"
+              src={arrowLeftIcon}
               alt="Left arrow icon"
             />
             <span className="text-sm text-neutral-600">Go Back</span>
@@ -145,11 +149,7 @@ export default function Notes({ filter }) {
           onClick={handleCreate}
           className="fixed right-10 bottom-25 flex size-12 cursor-pointer items-center justify-center rounded-full bg-blue-500 md:bottom-30 md:size-16"
         >
-          <img
-            className="size-8"
-            src="src/assets/images/icon-plus.svg"
-            alt="plus icon"
-          />
+          <img className="size-8" src={plusIcon} alt="plus icon" />
         </button>
       </div>
     );
@@ -162,11 +162,7 @@ export default function Notes({ filter }) {
             {title}
           </h1>
           <div className="relative flex flex-1 items-center rounded-lg border-1 border-neutral-300 px-4 py-3 drop-shadow">
-            <img
-              className="absolute size-5"
-              src="src/assets/images/icon-search.svg"
-              alt=""
-            />
+            <img className="absolute size-5" src={searchIcon} alt="" />
             <input
               className="w-full pl-6 text-sm leading-normal font-normal text-neutral-900 focus:outline-none"
               type="text"
@@ -176,11 +172,7 @@ export default function Notes({ filter }) {
             />
           </div>
           <Link to="/setting">
-            <img
-              className="size-6"
-              src="src/assets/images/icon-settings.svg"
-              alt=""
-            />
+            <img className="size-6" src={settingIcon} alt="" />
           </Link>
         </section>
         <section className="flex flex-col gap-2 overflow-auto border-r-1 border-neutral-200 py-5 pr-4 pl-8">
@@ -188,11 +180,7 @@ export default function Notes({ filter }) {
             onClick={handleCreate}
             className="flex w-full cursor-pointer items-center justify-center rounded-lg bg-blue-500 px-4 py-3 text-sm leading-normal font-medium tracking-wide text-white"
           >
-            <img
-              className="size-5"
-              src="src/assets/images/icon-plus.svg"
-              alt="Plus icon"
-            />
+            <img className="size-5" src={plusIcon} alt="Plus icon" />
             Create New Note
           </button>
 

@@ -4,6 +4,11 @@ import useIsDesktop from "../hooks/useIsDesktop";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
+import arrowLeftIcon from "../assets/images/icon-arrow-left.svg";
+import archiveIcon from "../assets/images/icon-archive.svg";
+import deleteIcon from "../assets/images/icon-delete.svg";
+import tagIcon from "../assets/images/icon-tag.svg";
+import clockIcon from "../assets/images/icon-clock.svg";
 
 export default function Note({ isCreating, onClose }) {
   const [note, setNote] = useState(null);
@@ -102,10 +107,7 @@ export default function Note({ isCreating, onClose }) {
         {!isDesktop && (
           <div className="flex items-center justify-between border-b border-neutral-200 pb-4">
             <Link onClick={onClose} to={pathname} className="flex gap-1">
-              <img
-                src="../src/assets/images/icon-arrow-left.svg"
-                alt="Left arrow icon"
-              />
+              <img src={arrowLeftIcon} alt="Left arrow icon" />
               <span className="text-neutral-600">Go Back</span>
             </Link>
             <div className="flex items-center gap-4">
@@ -114,7 +116,7 @@ export default function Note({ isCreating, onClose }) {
                   <button className="cursor-pointer">
                     <img
                       className="size-4.5"
-                      src="../src/assets/images/icon-delete.svg"
+                      src={deleteIcon}
                       alt="delete icon"
                     />
                   </button>
@@ -122,7 +124,7 @@ export default function Note({ isCreating, onClose }) {
                   <button className="cursor-pointer">
                     <img
                       className="size-4.5"
-                      src="../src/assets/images/icon-archive.svg"
+                      src={archiveIcon}
                       alt="delete icon"
                     />
                   </button>
@@ -160,11 +162,7 @@ export default function Note({ isCreating, onClose }) {
         <div className="flex flex-col gap-4">
           <div className="flex items-center">
             <div className="flex w-28 items-center gap-1.5 text-neutral-700">
-              <img
-                className="size-4"
-                src="../src/assets/images/icon-tag.svg"
-                alt="tag icon"
-              />
+              <img className="size-4" src={tagIcon} alt="tag icon" />
               <span className="text-sm">Tags</span>
             </div>
             <input
@@ -178,11 +176,7 @@ export default function Note({ isCreating, onClose }) {
           </div>
           <div className="flex items-center">
             <div className="flex w-28 items-center gap-1.5 text-neutral-700">
-              <img
-                className="size-4"
-                src="../src/assets/images/icon-clock.svg"
-                alt="clock icon"
-              />
+              <img className="size-4" src={clockIcon} alt="clock icon" />
               <span className="text-sm">Last Edited</span>
             </div>
             <input
@@ -229,17 +223,11 @@ export default function Note({ isCreating, onClose }) {
           {!isCreating && (
             <>
               <button className="flex cursor-pointer gap-2 rounded-lg border border-neutral-300 px-4 py-3">
-                <img
-                  src="src/assets/images/icon-archive.svg"
-                  alt="Archive icon"
-                />
+                <img src={archiveIcon} alt="Archive icon" />
                 Archived Note
               </button>
               <button className="flex cursor-pointer gap-2 rounded-lg border border-neutral-300 px-4 py-3">
-                <img
-                  src="src/assets/images/icon-delete.svg"
-                  alt="Delete icon"
-                />
+                <img src={deleteIcon} alt="Delete icon" />
                 Delete Note
               </button>
             </>

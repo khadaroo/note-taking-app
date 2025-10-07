@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import showPasswordIcon from "../assets/images/icon-show-password.svg";
+import hidePasswordIcon from "../assets/images/icon-hide-password.svg";
 
 function getButtonText(mode) {
   switch (mode) {
@@ -187,15 +189,9 @@ export default function AuthForm({ mode, onSubmit, isLoading }) {
               className="absolute top-0 right-4 translate-y-1/2 cursor-pointer"
             >
               {showPassword ? (
-                <img
-                  src="src/assets/images/icon-hide-password.svg"
-                  alt="Hide password icon"
-                />
+                <img src={hidePasswordIcon} alt="Hide password icon" />
               ) : (
-                <img
-                  src="src/assets/images/icon-show-password.svg"
-                  alt="Show password icon"
-                />
+                <img src={showPasswordIcon} alt="Show password icon" />
               )}
             </div>
             {(touched.password || submitted) && error.password && (
@@ -226,15 +222,9 @@ export default function AuthForm({ mode, onSubmit, isLoading }) {
               className="absolute top-0 right-4 translate-y-1/2 cursor-pointer"
             >
               {showConfirmPassword ? (
-                <img
-                  src="src/assets/images/icon-hide-password.svg"
-                  alt="Hide password icon"
-                />
+                <img src={hidePasswordIcon} alt="Hide password icon" />
               ) : (
-                <img
-                  src="src/assets/images/icon-show-password.svg"
-                  alt="Show password icon"
-                />
+                <img src={showPasswordIcon} alt="Show password icon" />
               )}
             </div>
             {(touched.confirmPassword || submitted) &&

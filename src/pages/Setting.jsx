@@ -4,6 +4,10 @@ import VerticalDivider from "../Components/VerticalDivider";
 import { supabase } from "../lib/supabase";
 import { useToast } from "../context/ToastContext";
 import Spinner from "../Components/Spinner";
+import sunIcon from "../assets/images/icon-sun.svg";
+import fontIcon from "../assets/images/icon-font.svg";
+import lockIcon from "../assets/images/icon-lock.svg";
+import logoutIcon from "../assets/images/icon-logout.svg";
 
 export default function Setting() {
   const [isLoading, setIsLoading] = useState(false);
@@ -36,7 +40,7 @@ export default function Setting() {
       <div className="flex flex-col gap-2 border-neutral-200 pb-2">
         <Link to="color-theme">
           <div className="flex items-center gap-2 py-2">
-            <img src="src/assets/images/icon-sun.svg" alt="" />
+            <img src={sunIcon} alt="" />
             <span className="text-sm leading-[1.2] font-medium text-neutral-950">
               Color Theme
             </span>
@@ -44,14 +48,14 @@ export default function Setting() {
         </Link>
 
         <div className="flex items-center gap-2 py-2">
-          <img src="src/assets/images/icon-font.svg" alt="" />
+          <img src={fontIcon} alt="" />
           <span className="text-sm leading-[1.2] font-medium text-neutral-950">
             Font Theme
           </span>
         </div>
 
         <div className="flex items-center gap-2 py-2">
-          <img src="src/assets/images/icon-lock.svg" alt="" />
+          <img src={lockIcon} alt="" />
           <span className="text-sm leading-[1.2] font-medium text-neutral-950">
             Change Password
           </span>
@@ -63,7 +67,7 @@ export default function Setting() {
           onClick={handleLogout}
           className="flex cursor-pointer items-center gap-2 py-2"
         >
-          <img src="src/assets/images/icon-logout.svg" alt="" />
+          <img src={logoutIcon} alt="" />
           <span className="text-sm leading-[1.2] font-medium text-neutral-950">
             Logout
           </span>

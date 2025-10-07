@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { supabase } from "../lib/supabase";
+import googleIcon from "../assets/images/icon-google.svg";
 
 export default function LoginWithGoogle() {
   const [error, setError] = useState("");
@@ -26,7 +27,7 @@ export default function LoginWithGoogle() {
         onClick={handleGoogleLogin}
         className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-neutral-300 px-3 py-4 hover:bg-neutral-50 focus:bg-neutral-50 focus:outline-none"
       >
-        <img src="src/assets/images/icon-google.svg" alt="Google icon" />
+        <img src={googleIcon} alt="Google icon" />
         <span className="tracking-wide">Google</span>
       </button>
       {error && <p>{Error}</p>}

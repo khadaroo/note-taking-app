@@ -1,4 +1,7 @@
 import { createContext, useState, useCallback, useContext } from "react";
+import checkmarkIcon from "../assets/images/icon-checkmark.svg";
+import cancelIcon from "../assets/images/icon-cancel.svg";
+import crossIcon from "../assets/images/icon-cross.svg";
 
 const ToastContext = createContext();
 
@@ -24,20 +27,13 @@ export function ToastProvider({ children }) {
             className="flex w-98 max-w-md items-center gap-2 rounded-lg bg-white p-2 drop-shadow-xl"
           >
             {toast.type === "success" ? (
-              <img
-                className="size-6"
-                src="src/assets/images/icon-checkmark.svg"
-              />
+              <img className="size-6" src={checkmarkIcon} />
             ) : (
-              <img className="size-6" src="src/assets/images/icon-cancel.svg" />
+              <img className="size-6" src={cancelIcon} />
             )}
             <p className="flex-1 text-sm text-neutral-950">{toast.message}</p>
             <button>
-              <img
-                className="size-6"
-                src="src/assets/images/icon-cross.svg"
-                alt=""
-              />
+              <img className="size-6" src={crossIcon} alt="" />
             </button>
           </div>
         ))}
