@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import TagItem from "../components/TagItem";
+import TagItem from "../Components/TagItem";
 import { useNotes } from "../context/NotesContext";
 
 export default function Tags() {

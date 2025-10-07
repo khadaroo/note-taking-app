@@ -6,10 +6,10 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
-import NoteCard from "../components/NoteCard";
+import NoteCard from "../Components/NoteCard";
 import Note from "./Note";
 import useIsDesktop from "../hooks/useIsDesktop";
-import Search from "../components/Search";
+import Search from "../Components/Search";
 import { useNotes } from "../context/NotesContext";
 
 export default function Notes({ filter }) {

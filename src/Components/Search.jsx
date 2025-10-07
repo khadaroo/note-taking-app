@@ -1,4 +1,4 @@
-import NoteCard from "../components/NoteCard";
+import NoteCard from "./NoteCard";
 
 export default function Search({ value, onChange }) {
   return (

@@ -1,15 +1,15 @@
-import Main from "../components/Main";
-import Section from "../components/Section";
-import Logo from "../components/Logo";
-import AuthHeader from "../components/AuthHeader";
-import AuthForm from "../components/AuthForm";
-import LoginWithGoogle from "../components/LoginWithGoogle";
-import AuthSwitch from "../components/AuthSwitch";
-import VerticalDivider from "../components/VerticalDivider";
+import Main from "../Components/Main";
+import Section from "../Components/Section";
+import Logo from "../Components/Logo";
+import AuthHeader from "../Components/AuthHeader";
+import AuthForm from "../Components/AuthForm";
+import LoginWithGoogle from "../Components/LoginWithGoogle";
+import AuthSwitch from "../Components/AuthSwitch";
+import VerticalDivider from "../Components/VerticalDivider";
 import { supabase } from "../lib/supabase";
 import { useState } from "react";
 import { useToast } from "../context/ToastContext";
-import Spinner from "../components/Spinner";
+import Spinner from "../Components/Spinner";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);

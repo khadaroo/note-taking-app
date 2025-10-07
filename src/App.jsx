@@ -6,8 +6,8 @@ import ResetPassword from "./pages/ResetPassword";
 import Notes from "./pages/Notes";
 import Tags from "./pages/Tags";
 import Setting from "./pages/Setting";
-import PublicRoute from "./components/PublicRoute";
-import ProtectedRoute from "./components/ProtectedRoute";
+import PublicRoute from "./Components/PublicRoute";
+import ProtectedRoute from "./Components/ProtectedRoute";
 
 function App() {
   return (

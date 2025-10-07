@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import VerticalDivider from "../components/VerticalDivider";
+import VerticalDivider from "../Components/VerticalDivider";
 import { supabase } from "../lib/supabase";
 import { useToast } from "../context/ToastContext";
-import Spinner from "../components/Spinner";
+import Spinner from "../Components/Spinner";
 
 export default function Setting() {
   const [isLoading, setIsLoading] = useState(false);

@@ -1,12 +1,12 @@
-import Main from "../components/Main";
-import Section from "../components/Section";
-import Logo from "../components/Logo";
-import AuthHeader from "../components/AuthHeader";
-import AuthForm from "../components/AuthForm";
+import Main from "../Components/Main";
+import Section from "../Components/Section";
+import Logo from "../Components/Logo";
+import AuthHeader from "../Components/AuthHeader";
+import AuthForm from "../Components/AuthForm";
 import { supabase } from "../lib/supabase";
 import { useToast } from "../context/ToastContext";
 import { useEffect, useState } from "react";
-import Spinner from "../components/Spinner";
+import Spinner from "../Components/Spinner";
 import { useAuth } from "../context/AuthContext";
 import { Navigate } from "react-router-dom";
 
