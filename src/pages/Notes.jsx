@@ -33,6 +33,8 @@ export default function Notes({ filter }) {
     if (hasNote) setIsCreating(false);
   }, [hasNote]);
 
+  console.log(notes)
+
   const handleCreate = () => {
     setIsCreating(true);
     navigate(location.pathname, { replace: true });

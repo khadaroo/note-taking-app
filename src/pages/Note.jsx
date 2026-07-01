@@ -9,11 +9,13 @@ import archiveIcon from "../assets/images/icon-archive.svg";
 import deleteIcon from "../assets/images/icon-delete.svg";
 import tagIcon from "../assets/images/icon-tag.svg";
 import clockIcon from "../assets/images/icon-clock.svg";
+import { useNotes } from "../context/NotesContext";
 
 export default function Note({ isCreating, onClose }) {
   const [note, setNote] = useState(null);
+  const { addNote, updateNote } = useNotes();
   const [title, setTitle] = useState("");
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState("");
   const [lastEdited, setLastEdited] = useState("");
   const [content, setContent] = useState("");
   const [isEditing, setIsEditing] = useState(false);
@@ -35,6 +37,7 @@ export default function Note({ isCreating, onClose }) {
         .from("notes")
         .select("*")
         .eq("id", noteId)
+        .eq("user_id", userId)
         .single();
 
       if (error) {
@@ -51,23 +54,22 @@ export default function Note({ isCreating, onClose }) {
     const now = new Date().toISOString();
     const formattedTags = tags.split(",").map((tag) => tag.trim());
     if (isCreating) {
-      await supabase.from("notes").insert([
-        {
-          title,
-          content,
-          tags: formattedTags,
-          author_id: userId,
-          lastEdited: now,
-        },
-      ]);
+      await addNote({
+        title,
+        content,
+        tags: formattedTags,
+        user_id: userId,
+        updated_at: now,
+      });
       showToast("Note saved successfully!");
       setIsEditing(false);
     } else if (isEditing) {
-      await supabase
-        .from("notes")
-        .update({ title, content, tags, lastEdited: now })
-        .eq("id", note.id)
-        .eq("author_id", userId);
+      await updateNote(note.id, {
+        title,
+        content,
+        tags: tags.split(",").map((tag) => tag.trim()),
+        updated_at: now,
+      });
       showToast("Note updated successfully!");
     } else {
       setIsEditing(true);
@@ -81,7 +83,7 @@ export default function Note({ isCreating, onClose }) {
     if (note) {
       setTitle(note.title || "");
       setTags(note.tags ? note.tags.join(", ") : "");
-      setLastEdited(note.lastEdited ? note.lastEdited.split("T")[0] : "");
+      setLastEdited(note.updated_at ? note.updated_at.split("T")[0] : "");
       setContent(note.content || "");
       setIsEditing(false);
     } else if (isCreating) {
@@ -210,7 +212,7 @@ export default function Note({ isCreating, onClose }) {
             {buttonText}
           </button>
           <button
-            onClick={onclose}
+            onClick={onClose}
             className="cursor-pointer rounded-lg bg-neutral-100 px-4 py-3 text-neutral-600"
           >
             Cancel

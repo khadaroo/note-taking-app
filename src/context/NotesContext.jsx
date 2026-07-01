@@ -10,6 +10,41 @@ export function NotesProvider({ children }) {
 
   const userId = session?.user?.id;
 
+  const addNote = async (note) => {
+    const { data, error } = await supabase
+      .from("notes")
+      .insert(note)
+      .select()
+      .single();
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    setNotes((prev) => [data, ...prev]);
+
+    return data;
+  };
+
+  const updateNote = async (id, updates) => {
+    const { data, error } = await supabase
+      .from("notes")
+      .update(updates)
+      .eq("id", id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Update note error:", error);
+      return;
+    }
+
+    setNotes((prev) => prev.map((note) => (note.id === id ? data : note)));
+
+    return data;
+  };
+
   useEffect(() => {
     if (!userId) return;
 
@@ -17,7 +52,7 @@ export function NotesProvider({ children }) {
       const { data, error } = await supabase
         .from("notes")
         .select("*")
-        .eq("author_id", userId)
+        .eq("user_id", userId)
         .order("created_at", { ascending: false });
 
       if (error) console.error("Load notes error:", error);
@@ -54,7 +89,9 @@ export function NotesProvider({ children }) {
   }, [userId]);
 
   return (
-    <NotesContext.Provider value={{ notes }}>{children}</NotesContext.Provider>
+    <NotesContext.Provider value={{ notes, addNote, updateNote }}>
+      {children}
+    </NotesContext.Provider>
   );
 }
 

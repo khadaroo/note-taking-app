@@ -18,7 +18,7 @@ export default function NoteCard({ note }) {
           ))}
         </div>
         <p className="text-xs tracking-tight text-neutral-700">
-          {note.lastEdited.split("T")[0]}
+          {note.updated_at.split("T")[0]}
         </p>
       </div>
     </Link>
