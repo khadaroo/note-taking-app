@@ -33,7 +33,7 @@ export default function Notes({ filter }) {
     if (hasNote) setIsCreating(false);
   }, [hasNote]);
 
-  console.log(notes)
+  console.log(notes);
 
   const handleCreate = () => {
     setIsCreating(true);
@@ -51,8 +51,9 @@ export default function Notes({ filter }) {
   };
 
   const getFilteredNotes = () => {
-    if (filter === "archive") return notes.filter((n) => n.isArchived);
-    if (filter === "tag") return notes.filter((n) => n.tags.includes(tag));
+    if (filter === "archive") return notes.filter((n) => n.is_archived);
+    if (filter === "tag")
+      return notes.filter((n) => !n.is_archived && n.tags.includes(tag));
     if (filter === "search") {
       if (!searchQuery) return [];
 
@@ -64,7 +65,7 @@ export default function Notes({ filter }) {
           note.tags.some((t) => t.toLowerCase().includes(search)),
       );
     }
-    return notes;
+    return notes.filter((note) => !note.is_archived);
   };
 
   const filteredNotes = getFilteredNotes();
@@ -202,7 +203,7 @@ export default function Notes({ filter }) {
             </div>
           )}
 
-          {notes.filter((note) => note.isArchived).length === 0 &&
+          {notes.filter((note) => note.is_archived).length === 0 &&
             filter === "archive" && (
               <div className="mt-2 rounded-lg border-1 border-neutral-200 bg-neutral-100 p-2 text-sm leading-normal tracking-tight text-neutral-950">
                 <span>

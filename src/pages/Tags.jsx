@@ -1,11 +1,8 @@
-import { Link } from "react-router-dom";
 import TagItem from "../Components/TagItem";
 import { useNotes } from "../context/NotesContext";
 
 export default function Tags() {
-  const { notes } = useNotes();
-
-  const tags = [...new Set(notes.flatMap((note) => note.tags))].sort();
+  const { tags } = useNotes();
 
   return (
     <div className="xl:hidden">

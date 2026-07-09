@@ -7,9 +7,7 @@ import chevronRightIcon from "../assets/images/icon-chevron-right.svg";
 import tagIcon from "../assets/images/icon-tag.svg";
 
 export default function Sidebar() {
-  const { notes } = useNotes();
-
-  const tags = [...new Set(notes.flatMap((note) => note.tags))].sort();
+  const { tags } = useNotes();
 
   return (
     <aside className="flex flex-col gap-4 border-r-1 border-neutral-200 px-4 py-3">
@@ -44,10 +42,7 @@ export default function Sidebar() {
         <ul className="">
           {tags.map((tag, i) => (
             <Link key={i} to={`/tags/${tag}`}>
-              <li
-                key={i}
-                className="flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-neutral-700"
-              >
+              <li className="flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-neutral-700">
                 <img className="size-6" src={tagIcon} alt="" />
                 <span>{tag}</span>
               </li>

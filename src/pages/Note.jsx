@@ -7,13 +7,15 @@ import { useToast } from "../context/ToastContext";
 import arrowLeftIcon from "../assets/images/icon-arrow-left.svg";
 import archiveIcon from "../assets/images/icon-archive.svg";
 import deleteIcon from "../assets/images/icon-delete.svg";
+import restoreIcon from "../assets/images/icon-restore.svg";
 import tagIcon from "../assets/images/icon-tag.svg";
 import clockIcon from "../assets/images/icon-clock.svg";
 import { useNotes } from "../context/NotesContext";
+import ConfirmModal from "../Components/ConfirmModal";
 
 export default function Note({ isCreating, onClose }) {
   const [note, setNote] = useState(null);
-  const { addNote, updateNote } = useNotes();
+  const { addNote, updateNote, archiveNote, deleteNote } = useNotes();
   const [title, setTitle] = useState("");
   const [tags, setTags] = useState("");
   const [lastEdited, setLastEdited] = useState("");
@@ -41,48 +43,97 @@ export default function Note({ isCreating, onClose }) {
         .single();
 
       if (error) {
-        console.error(("Error fetching note:", error));
+        console.error("Error fetching note:", error);
         return;
       }
 
       setNote(data);
     };
     loadNote();
-  }, [noteId, isCreating]);
+  }, [noteId, isCreating, userId]);
 
   const handleSave = async () => {
     const now = new Date().toISOString();
-    const formattedTags = tags.split(",").map((tag) => tag.trim());
     if (isCreating) {
       await addNote({
         title,
         content,
-        tags: formattedTags,
-        user_id: userId,
+        tags: tags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean),
         updated_at: now,
       });
       showToast("Note saved successfully!");
       setIsEditing(false);
-    } else if (isEditing) {
-      await updateNote(note.id, {
-        title,
-        content,
-        tags: tags.split(",").map((tag) => tag.trim()),
-        updated_at: now,
-      });
-      showToast("Note updated successfully!");
-    } else {
-      setIsEditing(true);
+      if (onClose) onClose();
       return;
     }
 
-    if (onClose) onClose();
+    if (isEditing) {
+      await updateNote(note.id, {
+        title,
+        content,
+        tags: tags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean),
+        updated_at: now,
+      });
+      showToast("Note updated successfully!");
+      setIsEditing(false);
+      return;
+    }
+
+    setIsEditing(true);
+  };
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalAction, setModalAction] = useState(null);
+
+  const handleArchive = async () => {
+    if (!note) return;
+    setModalAction("archive");
+    setModalOpen(true);
+  };
+
+  const handleDelete = async () => {
+    if (!note) return;
+    setModalAction("delete");
+    setModalOpen(true);
+  };
+
+  const confirmModal = async () => {
+    if (!note || !modalAction) return;
+
+    if (modalAction === "archive") {
+      await archiveNote(note.id, !note.is_archived);
+      showToast(note.is_archived ? "Note restored." : "Note archived.");
+      if (!note.is_archived && onClose) onClose();
+      setNote((prev) => ({ ...prev, is_archived: !prev.is_archived }));
+    }
+
+    if (modalAction === "delete") {
+      await deleteNote(note.id);
+      showToast("Note deleted permanently.");
+      if (onClose) onClose();
+    }
+
+    setModalOpen(false);
+    setModalAction(null);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setModalAction(null);
   };
 
   useEffect(() => {
     if (note) {
       setTitle(note.title || "");
-      setTags(note.tags ? note.tags.join(", ") : "");
+      setTags(
+        Array.isArray(note.tags) ? note.tags.join(", ") : note.tags || "",
+      );
       setLastEdited(note.updated_at ? note.updated_at.split("T")[0] : "");
       setContent(note.content || "");
       setIsEditing(false);
@@ -101,6 +152,8 @@ export default function Note({ isCreating, onClose }) {
       ? "Update Note"
       : "Edit Note";
 
+  const isNoteArchived = note?.is_archived;
+
   return (
     <>
       <div
@@ -115,19 +168,26 @@ export default function Note({ isCreating, onClose }) {
             <div className="flex items-center gap-4">
               {!isCreating && (
                 <>
-                  <button className="cursor-pointer">
+                  <button
+                    onClick={handleDelete}
+                    className="cursor-pointer"
+                    type="button"
+                  >
                     <img
                       className="size-4.5"
                       src={deleteIcon}
                       alt="delete icon"
                     />
                   </button>
-
-                  <button className="cursor-pointer">
+                  <button
+                    onClick={handleArchive}
+                    className="cursor-pointer"
+                    type="button"
+                  >
                     <img
                       className="size-4.5"
                       src={archiveIcon}
-                      alt="delete icon"
+                      alt="archive icon"
                     />
                   </button>
                 </>
@@ -136,13 +196,15 @@ export default function Note({ isCreating, onClose }) {
               <button
                 onClick={onClose}
                 className="cursor-pointer rounded-lg text-sm text-neutral-600 md:text-base"
+                type="button"
               >
                 Cancel
               </button>
 
               <button
                 onClick={handleSave}
-                className="cursor-pointer text-sm text-blue-500 md:text-base"
+                className="bg-accent text-accent-text cursor-pointer rounded-lg px-4 py-3 text-sm md:text-base"
+                type="button"
               >
                 {buttonText}
               </button>
@@ -200,42 +262,73 @@ export default function Note({ isCreating, onClose }) {
           value={content}
           onChange={(e) => setContent(e.target.value)}
           disabled={!isEditing}
-        ></textarea>
+        />
 
         <div className="border-b border-neutral-200"></div>
 
         <div className="flex gap-4">
           <button
             onClick={handleSave}
-            className="cursor-pointer rounded-lg bg-blue-500 px-4 py-3 text-white"
+            className="bg-accent cursor-pointer rounded-lg px-4 py-3 text-white"
+            type="button"
           >
             {buttonText}
           </button>
           <button
             onClick={onClose}
             className="cursor-pointer rounded-lg bg-neutral-100 px-4 py-3 text-neutral-600"
+            type="button"
           >
             Cancel
           </button>
         </div>
       </div>
 
-      {isDesktop && (
+      {isDesktop && !isCreating && note && (
         <div className="flex min-w-64 flex-col gap-4 py-5 pr-8 pl-4">
-          {!isCreating && (
-            <>
-              <button className="flex cursor-pointer gap-2 rounded-lg border border-neutral-300 px-4 py-3">
-                <img src={archiveIcon} alt="Archive icon" />
-                Archived Note
-              </button>
-              <button className="flex cursor-pointer gap-2 rounded-lg border border-neutral-300 px-4 py-3">
-                <img src={deleteIcon} alt="Delete icon" />
-                Delete Note
-              </button>
-            </>
-          )}
+          <button
+            onClick={handleArchive}
+            className="flex cursor-pointer gap-2 rounded-lg border border-neutral-300 px-4 py-3"
+            type="button"
+          >
+            <img
+              src={note.is_archived ? restoreIcon : archiveIcon}
+              alt="Archive icon"
+            />
+            {note.is_archived ? "Restore Note" : "Archive Note"}
+          </button>
+          <button
+            onClick={handleDelete}
+            className="flex cursor-pointer gap-2 rounded-lg border border-neutral-300 px-4 py-3"
+            type="button"
+          >
+            <img src={deleteIcon} alt="Delete icon" />
+            Delete Note
+          </button>
         </div>
       )}
+
+      <ConfirmModal
+        open={modalOpen}
+        title={modalAction === "delete" ? "Delete note?" : "Archive note?"}
+        message={
+          modalAction === "delete"
+            ? "This note will be deleted permanently. This cannot be undone."
+            : note?.is_archived
+              ? "Restore this note from archive?"
+              : "Archive this note?"
+        }
+        confirmLabel={
+          modalAction === "delete"
+            ? "Delete"
+            : note?.is_archived
+              ? "Restore"
+              : "Archive"
+        }
+        cancelLabel="Cancel"
+        onConfirm={confirmModal}
+        onClose={closeModal}
+      />
     </>
   );
 }
